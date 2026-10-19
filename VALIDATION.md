@@ -60,3 +60,9 @@ committing the study. An initially guessed 0.01% finest-mesh acceptance target
 was tighter than the measured 0.0387%; the explicit study acceptance criterion is
 0.1%. The measured error was retained, not altered or described as passing the
 earlier guess. All failure outputs remain part of the automation execution record.
+
+The first branch CI run passed both software jobs but exposed a Linux launcher
+bug: resolving the `pdflatex` symlink changed its invocation name to `pdftex`,
+which selected plain TeX and rejected `documentclass`. The build script now
+normalizes the absolute path without dereferencing the executable symlink.
+The fix is validated by the subsequent independent manuscript CI run.

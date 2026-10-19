@@ -44,7 +44,9 @@ def main():
     engine = args.engine or shutil.which("pdflatex") or shutil.which("tectonic")
     if not engine:
         raise SystemExit("Install TeX Live (pdflatex) or Tectonic, or pass --engine PATH")
-    engine = str(Path(engine).resolve())
+    # Preserve the executable name: pdflatex may be a symlink to pdftex, whose
+    # argv[0] selects the LaTeX format. Resolving that link selects plain TeX.
+    engine = str(Path(engine).absolute())
     if "tectonic" in Path(engine).name.lower():
         commands = [[engine, "--keep-logs", "paper.tex"]]
     else:
